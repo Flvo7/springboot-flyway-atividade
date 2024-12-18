@@ -1,6 +1,6 @@
 Clientes API
 
-Este projeto é uma API RESTful para o cadastro e gerenciamento de clientes, construída utilizando Spring Boot, PostgreSQL, Flyway e outras tecnologias. Ele segue boas práticas de programação e utiliza estruturação em camadas (Controller, Service, Repository) para melhor organização.
+Este projeto é uma API RESTful para o cadastro e gerenciamento de clientes, construída utilizando Spring Boot, PostgreSQL, Flyway. Ele segue boas práticas de programação e utiliza estruturação em camadas (Controller, Service, Repository) para melhor organização.
 
 
 ---
