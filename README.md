@@ -1,6 +1,6 @@
-Carro API
+Clientes API
 
-Este projeto é uma API RESTful para o cadastro de carros. Foi desenvolvido utilizando Spring Boot, PostgreSQL, Flyway e outras tecnologias para demonstrar boas práticas de programação, versionamento de banco de dados e estruturação em camadas.
+Este projeto é uma API RESTful para o cadastro e gerenciamento de clientes, construída utilizando Spring Boot, PostgreSQL, Flyway e outras tecnologias. Ele segue boas práticas de programação e utiliza estruturação em camadas (Controller, Service, Repository) para melhor organização.
 
 
 ---
@@ -15,26 +15,28 @@ Maven 3.8+
 
 PostgreSQL 12+
 
-Um editor de código, como IntelliJ IDEA ou VSCode (opcional).
+Ferramenta de edição de código (opcional): IntelliJ IDEA, VSCode, ou outra de sua preferência.
 
 
-Passos para Configurar
+Passos para Configuração
 
-1. Clone o Repositório:
+1. Clone o repositório
 
-git clone https://github.com/seu-usuario/spring-cars.git
-cd spring-cars
+Execute os comandos abaixo para clonar o projeto:
+
+git clone https://github.com/seu-usuario/spring-clientes.git
+cd spring-clientes
+
+2. Configure o Banco de Dados
+
+1. Acesse seu banco PostgreSQL e crie o banco de dados:
+
+CREATE DATABASE clientes_db;
 
 
-2. Configure o Banco de Dados:
+2. Configure as credenciais de acesso no arquivo src/main/resources/application.properties:
 
-Crie um banco de dados no PostgreSQL:
-
-CREATE DATABASE carros_db;
-
-Configure as credenciais de acesso no arquivo src/main/resources/application.properties:
-
-spring.datasource.url=jdbc:postgresql://localhost:5432/carros_db
+spring.datasource.url=jdbc:postgresql://localhost:5432/clientes_db
 spring.datasource.username=seu_usuario
 spring.datasource.password=sua_senha
 spring.jpa.hibernate.ddl-auto=none
@@ -42,136 +44,194 @@ spring.flyway.enabled=true
 
 
 
-3. Compile e Execute o Projeto:
+3. Compile o projeto
 
-Compile o projeto:
+Execute o comando para baixar dependências e compilar o projeto:
 
 mvn clean install
 
-Execute a aplicação:
+4. Execute a aplicação
+
+Inicie o servidor:
 
 mvn spring-boot:run
 
+5. Acesse a API
+
+A API estará disponível em:
+
+http://localhost:8080/api/clientes
 
 
-4. Acesse a API:
+---
 
-Após iniciar, a API estará disponível em:
+Estrutura do Projeto
 
-http://localhost:8080/api/carros
+Model: Define a classe Cliente com os atributos id, nome, email e telefone.
 
+Repository: Interface que permite interação com o banco de dados usando JPA.
 
+Service: Camada que encapsula a lógica de negócios.
+
+Controller: Gerencia os endpoints REST para operações de CRUD.
+
+Flyway: Gerencia o versionamento do banco de dados.
 
 
 
 ---
 
-Endpoints e Exemplos de Uso
+Endpoints Disponíveis
 
-Aqui estão os principais endpoints disponíveis e exemplos de como utilizá-los via cURL:
+1. Listar todos os clientes
 
-1. Listar todos os carros
+Método: GET
 
-Endpoint: GET /api/carros
+Endpoint: /api/clientes
 
-Exemplo:
+Descrição: Retorna uma lista de todos os clientes cadastrados.
 
-curl -X GET http://localhost:8080/api/carros
+Exemplo de Uso (cURL):
 
-
-2. Buscar um carro por placa
-
-Endpoint: GET /api/carros/{placa}
-
-Exemplo:
-
-curl -X GET http://localhost:8080/api/carros/ABC1234
+curl -X GET http://localhost:8080/api/clientes
 
 
-3. Criar um novo carro
 
-Endpoint: POST /api/carros
+---
 
-Body:
+2. Buscar um cliente por ID
 
-{
-  "placa": "DEF5678",
-  "nome": "Onix",
-  "marca": "Chevrolet"
-}
+Método: GET
 
-Exemplo:
+Endpoint: /api/clientes/{id}
 
-curl -X POST http://localhost:8080/api/carros \
--H "Content-Type: application/json" \
--d '{"placa": "DEF5678", "nome": "Onix", "marca": "Chevrolet"}'
+Descrição: Retorna os dados de um cliente específico.
+
+Exemplo de Uso (cURL):
+
+curl -X GET http://localhost:8080/api/clientes/1
 
 
-4. Atualizar os dados de um carro
 
-Endpoint: PUT /api/carros/{placa}
+---
 
-Body:
+3. Criar um novo cliente
+
+Método: POST
+
+Endpoint: /api/clientes
+
+Descrição: Adiciona um novo cliente ao banco de dados.
+
+Exemplo de Body:
 
 {
-  "nome": "Onix Plus",
-  "marca": "Chevrolet"
+  "nome": "João Silva",
+  "email": "joao.silva@example.com",
+  "telefone": "(62) 91234-5678"
 }
 
-Exemplo:
+Exemplo de Uso (cURL):
 
-curl -X PUT http://localhost:8080/api/carros/DEF5678 \
+curl -X POST http://localhost:8080/api/clientes \
 -H "Content-Type: application/json" \
--d '{"nome": "Onix Plus", "marca": "Chevrolet"}'
+-d '{"nome": "João Silva", "email": "joao.silva@example.com", "telefone": "(62) 91234-5678"}'
 
 
-5. Deletar um carro
 
-Endpoint: DELETE /api/carros/{placa}
+---
 
-Exemplo:
+4. Atualizar um cliente existente
 
-curl -X DELETE http://localhost:8080/api/carros/DEF5678
+Método: PUT
 
+Endpoint: /api/clientes/{id}
+
+Descrição: Atualiza os dados de um cliente específico.
+
+Exemplo de Body:
+
+{
+  "nome": "João Pereira",
+  "email": "joao.pereira@example.com",
+  "telefone": "(62) 99876-5432"
+}
+
+Exemplo de Uso (cURL):
+
+curl -X PUT http://localhost:8080/api/clientes/1 \
+-H "Content-Type: application/json" \
+-d '{"nome": "João Pereira", "email": "joao.pereira@example.com", "telefone": "(62) 99876-5432"}'
+
+
+
+---
+
+5. Deletar um cliente
+
+Método: DELETE
+
+Endpoint: /api/clientes/{id}
+
+Descrição: Remove um cliente do banco de dados.
+
+Exemplo de Uso (cURL):
+
+curl -X DELETE http://localhost:8080/api/clientes/1
+
+
+
+---
+
+Versionamento do Banco de Dados
+
+Este projeto utiliza o Flyway para gerenciar o versionamento do banco de dados. Os scripts SQL de migração estão localizados na pasta src/main/resources/db/migration. Abaixo está um exemplo do script usado para criar a tabela clientes:
+
+-- V1__Create_Clientes_Table.sql
+CREATE TABLE cliente (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    telefone VARCHAR(15) NOT NULL
+);
+
+Para aplicar as migrações, basta executar a aplicação. O Flyway fará o versionamento automaticamente ao iniciar.
 
 
 ---
 
 Dependências Utilizadas
 
-As principais dependências utilizadas neste projeto são:
-
 Spring Boot 3.1.6:
 
-spring-boot-starter-web: Para criar a API RESTful.
+spring-boot-starter-web: Para criação da API REST.
 
 spring-boot-starter-data-jpa: Para integração com o banco de dados.
 
 
-PostgreSQL 42.2.23: Driver de conexão com o banco de dados PostgreSQL.
+PostgreSQL 42.2.23: Driver de conexão com o banco PostgreSQL.
 
 Flyway 9.22.1: Para versionamento do banco de dados.
 
-Maven 3.8+: Para gerenciamento de dependências e build do projeto.
+Maven 3.8+: Gerenciador de dependências e build.
 
 
 
 ---
 
-Informações Relevantes
+Como Contribuir
 
-Porta padrão: 8080
+1. Faça um fork do repositório.
 
-Banco de Dados: PostgreSQL
 
-Versão do Java: 17
+2. Crie uma branch para a sua feature:
 
-Estrutura do Projeto:
+git checkout -b minha-feature
 
-Model: Representa as entidades do banco de dados.
 
-Repository: Interface para interação com o banco de dados.
+3. Faça as alterações e commit:
 
-Service: Contém a lógica de negócios.
+git commit -m "Adicionei uma nova feature"
 
-Controller: Gerencia as operações de CRUD.
+
+4. Envie o pull request.
